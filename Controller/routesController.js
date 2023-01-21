@@ -44,7 +44,7 @@ route.post('/getWeather', function(req, res) {
 
 //  for adding user
 route.post('/addUser', async (req, res) => {
-
+    console.log(req.body,"rr")
     const addActivity = new userModule({
         firstName: req.body.data.firstName,
         lastName: req.body.data.lastName,
@@ -55,7 +55,7 @@ route.post('/addUser', async (req, res) => {
     });
 
     const result = await addActivity.save();
-    res.send({ message: result });
+    res.send({ message: "User Created" });
 });
 
 

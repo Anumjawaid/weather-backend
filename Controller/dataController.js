@@ -15,7 +15,7 @@ function test() {
 
 
 const getWeatherDefault = () => {
-    let locationArray = ["Karachi", "Lahore", "Islamabad", "Quetta", "Peshawar"]
+    let locationArray = ["Karachi", "Lahore", "Islamabad", "Quetta", "Peshawar","Hyderabad","Multan","Faislabad","Ziarat"]
     let weatherarr = [];
     for (let i = 0; i < locationArray.length; i++) {
         // Use that city name to fetch data
