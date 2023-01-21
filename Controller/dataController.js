@@ -21,22 +21,33 @@ const getWeatherDefault = () => {
         // Use that city name to fetch data
         // Use the API_KEY     
         let url = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${locationArray[i]}&aqi=no`;
-        request(url, function (err, response, body) {
+        request(url, async function (err, response, body) {
             // On return, check the json data fetched
             if (err) {
                 res.render('index', { weather: null, error: 'Error, please try again' });
             } else {
 
                 let weather = JSON.parse(body);
-                weatherarr.push({ name: weather.location.name, temp: weather.current.temp_c, condition: weather.current.condition })
-                console.log(weatherarr);
+                const getUserName=await(dataModule.find({Name:locationArray[i]}) )
+                console.log(getUserName[0]._id)
+                    if(getUserName.length !=0) {
+                  
+
+
+                        // updatae record in db
+                    }
+                    else {
+                        // add rewcord in db
+                        console.log("DASAS")
+                        let addActivity = new dataModule({
+                            Name: weather.location.name,
+                            detail: {temp: weather.current.temp_c, condition: weather.current.condition }
+                           
+                        });
+                        const result =  addActivity.save();
+                    }
+            
                
-                let addActivity = new dataModule({
-                    Name: weather.location.name,
-                    detail: {temp: weather.current.temp_c, condition: weather.current.condition }
-                   
-                });
-                const result =  addActivity.save();
             }
         })
     }
