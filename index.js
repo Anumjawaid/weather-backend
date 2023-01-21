@@ -4,10 +4,6 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const routes = require('./Controller/routesController');
-// var server = require('http').createServer(app);
-// var io = require('socket.io')(server, {
-//     cors: { origin: "*"}
-// })
 
 dotenv.config();
 app.use(cors());
