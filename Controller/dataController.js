@@ -28,11 +28,20 @@ const getWeatherDefault = () => {
             } else {
 
                 let weather = JSON.parse(body);
+                console.log(weather)
                 const getUserName=await(dataModule.find({Name:locationArray[i]}) )
-                
+                console.log(getUserName)
                     if(getUserName.length !=0) {
-                  
-                        console.log(getUserName[0]._id,"d")
+                        console.log(getUserName[0]._id)
+                        const _id = getUserName[0]._id;
+                        const updateactivity = await dataModule.findByIdAndUpdate({ _id },
+                            {
+                                $set: {
+                                    Name: weather.location.name,
+                                    detail: {temp: weather.current.temp_c, condition: weather.current.condition }
+                                }
+                            });
+
 
                         // updatae record in db
                     }
