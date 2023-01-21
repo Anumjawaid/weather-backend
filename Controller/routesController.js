@@ -7,13 +7,20 @@ const request = require("request");
 const bcrypt = require("bcrypt")
 const saltRounds = 10
 
-routedata.getWeatherDefault();
+// routedata.getWeatherDefault();
 // for testing if server is working or not
-route.get('/', async (req, res) => {
-
+route.post('/', async (req, res) => {
+    let a=await routedata.SingleRoute('khuzdarhhh')
+console.log(a,"a")
     res.send({ message: 'hello from server' });
 
 })
+route.get('/addCity', async (req, res) => {
+    let a=await routedata.SingleRoute(req,res)
+    // res.send({ message: 'hello from server' });
+
+})
+
 const apiKey = "a355251073b74f4899d63723232001"
 
 

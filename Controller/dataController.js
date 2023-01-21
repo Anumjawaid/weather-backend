@@ -15,7 +15,7 @@ function test() {
 
 
 const getWeatherDefault = () => {
-    let locationArray = ["Karachi", "Lahore", "Islamabad", "Quetta", "Peshawar","Hyderabad","Multan","Faislabad","Ziarat"]
+    let locationArray = ["Karachi", "Lahore", "Islamabad", "Quetta", "Peshawar","Hyderabad",'Ziarat',"Khuzdar"]
     let weatherarr = [];
     for (let i = 0; i < locationArray.length; i++) {
         // Use that city name to fetch data
@@ -29,16 +29,16 @@ const getWeatherDefault = () => {
 
                 let weather = JSON.parse(body);
                 const getUserName=await(dataModule.find({Name:locationArray[i]}) )
-                console.log(getUserName[0]._id)
+                
                     if(getUserName.length !=0) {
                   
-
+                        console.log(getUserName[0]._id,"d")
 
                         // updatae record in db
                     }
                     else {
                         // add rewcord in db
-                        console.log("DASAS")
+                        console.log("DASAS",weather)
                         let addActivity = new dataModule({
                             Name: weather.location.name,
                             detail: {temp: weather.current.temp_c, condition: weather.current.condition }
@@ -52,4 +52,45 @@ const getWeatherDefault = () => {
         })
     }
 }
-module.exports = { getWeatherDefault,test };
+
+
+async function SingleRoute(req,res){
+    let url = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${req.body.data.city}&aqi=no`;
+    await request(url, async function (err, response, body) {
+        // On return, check the json data fetched
+        if (err) {
+            res.render('index', { weather: null, error: 'Error, please try again' });
+        } else {
+
+            let weather = JSON.parse(body);
+            // const getUserName=await(dataModule.find({Name:rname}) )
+            if(weather.error == undefined){
+                res.send({message:"Able"})
+                // return {message:weather}
+
+            }
+            else{
+                // return {message:"No such City Exist"}
+                res.send({message:"Error"})
+            }
+            
+            
+                // if(getUserName.length !=0) {
+              
+                //     console.log(getUserName[0]._id,"d")
+
+                //     // updatae record in db
+
+                // }
+                // else {
+                //     // add rewcord in db
+                //     console.log("DASAS",weather)
+                    
+                // }
+        
+           
+        }
+    })
+
+}
+module.exports = { getWeatherDefault,test,SingleRoute };
