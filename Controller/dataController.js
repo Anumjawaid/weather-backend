@@ -15,7 +15,7 @@ function test() {
 
 
 const getWeatherDefault = () => {
-    let locationArray = ["Karachi", "Lahore", "Islamabad", "Quetta", "Peshawar","Hyderabad","Multan","Faislabad","Ziarat"]
+    let locationArray = ["Karachi", "Lahore", "Islamabad", "Quetta", "Peshawar","Hyderabad","Multan","Faisalabad","Ziarat"]
     let weatherarr = [];
     for (let i = 0; i < locationArray.length; i++) {
         // Use that city name to fetch data
@@ -28,10 +28,19 @@ const getWeatherDefault = () => {
             } else {
 
                 let weather = JSON.parse(body);
+                console.log(weather)
                 const getUserName=await(dataModule.find({Name:locationArray[i]}) )
-                console.log(getUserName[0]._id)
+                console.log(getUserName)
                     if(getUserName.length !=0) {
-                  
+                        console.log(getUserName[0]._id)
+                        const _id = getUserName[0]._id;
+                        const updateactivity = await dataModule.findByIdAndUpdate({ _id },
+                            {
+                                $set: {
+                                    Name: weather.location.name,
+                                    detail: {temp: weather.current.temp_c, condition: weather.current.condition }
+                                }
+                            });
 
 
                         // updatae record in db
