@@ -22,7 +22,7 @@ const io = new Server(server, {
     },
 });
 //mongoose.connect(`mongodb+srv://Anum:anum@cluster0.x9rxwjh.mongodb.net/wheather`
-mongoose.connect(`mongodb+srv://Anum:anum@cluster0.x9rxwjh.mongodb.net/wheather`, {
+mongoose.connect(`mongodb+srv://sa:123@cluster0.gaiezys.mongodb.net/wheather`, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
