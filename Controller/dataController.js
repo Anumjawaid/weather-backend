@@ -151,50 +151,43 @@ async function SingleRoute(req, res, user, Module) {
 
             }
         })
-
-
-    }
-
-
-
-
-
+    
 
 }
-
+}
 
 // Need to look on the below code since It should have to be reusable in terms of Route and Single Calling
-async function GetCity(cityname) {
-    let weather
-    let url = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${cityname}&aqi=no`;
-    return request(url, async function (err, response, body) {
-        // On return, check the json data fetched
-        if (err) {
-            res.render('index', { weather: null, error: 'Error, please try again' });
+// async function GetCity(cityname) {
+//     let weather
+//     let url = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${cityname}&aqi=no`;
+//     return request(url, async function (err, response, body) {
+//         // On return, check the json data fetched
+//         if (err) {
+//             res.render('index', { weather: null, error: 'Error, please try again' });
 
-        } else {
+//         } else {
 
-            weather = JSON.parse(body);
-            // const getUserName=await(dataModule.find({Name:rname}) )
-            if (weather.error == undefined) {
-                // Check if this city is in master if yes then update with Id Else add to master List aswell
-
-
-
-            }
-            else {
-                // return {message:"No such City Exist"}
-
-            }
+//             weather = JSON.parse(body);
+//             // const getUserName=await(dataModule.find({Name:rname}) )
+//             if (weather.error == undefined) {
+//                 // Check if this city is in master if yes then update with Id Else add to master List aswell
 
 
 
+//             }
+//             else {
+//                 // return {message:"No such City Exist"}
 
-        }
-    })
-    return weather
+//             }
 
-}
+
+
+
+//         }
+//     })
+//     return weather
+
+// }
 
 
 async function CheckMaster(cityName) {
@@ -209,4 +202,4 @@ async function CheckMaster(cityName) {
     }
 
 }
-module.exports = { getWeatherDefault, test, SingleRoute, CheckMaster, weatherarr };
+module.exports = { getWeatherDefault, test, SingleRoute, CheckMaster, weatherarr }
