@@ -43,6 +43,7 @@ route.post('/addCity', async (req, res) => {
 //  for adding user
 route.post('/addUser', async (req, res) => {
     console.log(req.body,"rr")
+
     const addActivity = new userModule({
         firstName: req.body.data.firstName,
         lastName: req.body.data.lastName,
@@ -53,7 +54,7 @@ route.post('/addUser', async (req, res) => {
     });
 
     const result = await addActivity.save();
-    res.send({ message: "User Created" ,result,result});
+    res.send({ message: "User Created" ,result:result});
 });
 
 
@@ -65,7 +66,7 @@ route.post('/queryUser', async (req, res) => {
     const result = await userModule.find({ email: req.body.data.email })
     if (result.length != 0) {
         let valid = await validateUser(req.body.data.password, result[0].password)
-        res.send({ message: valid });
+        res.send({ message: valid ,result:result});
     }
     else {
         res.send({ message: "User doesnot exist" });
