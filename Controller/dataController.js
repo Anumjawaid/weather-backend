@@ -4,7 +4,7 @@ const request = require("request");
 const dataSchema = require('../Model/dataModel.js')(mongoose);
 const dataModule = new mongoose.model('MasterData', dataSchema);
 const apiKey = "a355251073b74f4899d63723232001"
-
+let weatherarr = [];
 function test() {
     let yourSchema = new dataModule;
     yourSchema.detail = {}
@@ -16,7 +16,7 @@ function test() {
 
 const getWeatherDefault = () => {
     let locationArray = ["Karachi", "Lahore", "Islamabad", "Quetta", "Peshawar", "Hyderabad", 'Ziarat', "Khuzdar"]
-    let weatherarr = [];
+
     for (let i = 0; i < locationArray.length; i++) {
         // Use that city name to fetch data
         // Use the API_KEY     
@@ -28,11 +28,16 @@ const getWeatherDefault = () => {
             } else {
 
                 let weather = JSON.parse(body);
-                console.log(weather)
+                // console.log(weather)
                 const getUserName = await (dataModule.find({ Name: locationArray[i] }))
-                console.log(getUserName)
+                // console.log(getUserName)
+                
+                weatherarr.push({
+                    Name: weather.location.name,
+                    detail: { temp: weather.current.temp_c, condition: weather.current.condition }
+                })
                 if (getUserName.length != 0) {
-                    console.log(getUserName[0]._id)
+                    // console.log(getUserName[0]._id)
                     const _id = getUserName[0]._id;
                     const updateactivity = await dataModule.findByIdAndUpdate({ _id },
                         {
@@ -47,7 +52,10 @@ const getWeatherDefault = () => {
                 }
                 else {
                     // add rewcord in db
-                    console.log("DASAS", weather)
+                    // console.log("DASAS", weather)
+
+                   
+
                     let addActivity = new dataModule({
                         Name: weather.location.name,
                         detail: { temp: weather.current.temp_c, condition: weather.current.condition }
@@ -64,50 +72,50 @@ const getWeatherDefault = () => {
 
 
 async function SingleRoute(req, res) {
-    
-        let url = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${req.body.data.city}&aqi=no`;
-        await request(url, async function (err, response, body) {
-            // On return, check the json data fetched
-            if (err) {
-                res.render('index', { weather: null, error: 'Error, please try again' });
-            } else {
 
-                let weather = JSON.parse(body);
-                // const getUserName=await(dataModule.find({Name:rname}) )
-                if (weather.error == undefined) {
-                    // Check if this city is in master if yes then update with Id Else add to master List aswell
-                    const getDesc = await (dataModule.find({ Name: req.body.data.city }))
-                    console.log(getDesc, "getDesc")
-                    let _id = getDesc[0]._id
-                    if (getDesc.length != 0) {
-                        // If City Exist then Map to User
-                        // const updateactivity = await dataModule.findByIdAndUpdate({ _id },
-                        //     {
-                        //         $set: {
-                        //             Name: weather.location.name,
-                        //             detail: { temp: weather.current.temp_c, condition: weather.current.condition }
-                        //         }
-                        //     });
+    let url = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${req.body.data.city}&aqi=no`;
+    await request(url, async function (err, response, body) {
+        // On return, check the json data fetched
+        if (err) {
+            res.render('index', { weather: null, error: 'Error, please try again' });
+        } else {
 
-                    }
-                    else {
-                        // Add to Master and Update to User
-                    }
-
-                    res.send({ message: "Able" })
+            let weather = JSON.parse(body);
+            // const getUserName=await(dataModule.find({Name:rname}) )
+            if (weather.error == undefined) {
+                // Check if this city is in master if yes then update with Id Else add to master List aswell
+                const getDesc = await (dataModule.find({ Name: req.body.data.city }))
+                console.log(getDesc, "getDesc")
+                let _id = getDesc[0]._id
+                if (getDesc.length != 0) {
+                    // If City Exist then Map to User
+                    // const updateactivity = await dataModule.findByIdAndUpdate({ _id },
+                    //     {
+                    //         $set: {
+                    //             Name: weather.location.name,
+                    //             detail: { temp: weather.current.temp_c, condition: weather.current.condition }
+                    //         }
+                    //     });
 
                 }
                 else {
-                    // return {message:"No such City Exist"}
-                    res.send({ message: "Error" })
+                    // Add to Master and Update to User
                 }
 
-
-
+                res.send({ message: "Able" })
 
             }
-        })
-    
+            else {
+                // return {message:"No such City Exist"}
+                res.send({ message: "Error" })
+            }
+
+
+
+
+        }
+    })
+
 
 }
 
@@ -158,4 +166,4 @@ async function CheckMaster(cityName) {
     }
 
 }
-module.exports = { getWeatherDefault, test, SingleRoute, CheckMaster };
+module.exports = { getWeatherDefault, test, SingleRoute, CheckMaster,weatherarr };

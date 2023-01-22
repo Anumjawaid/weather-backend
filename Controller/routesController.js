@@ -7,8 +7,9 @@ const request = require("request");
 const bcrypt = require("bcrypt")
 const saltRounds = 10
 const apiKey = "a355251073b74f4899d63723232001"
+let city5=[]
 
-// routedata.getWeatherDefault();
+routedata.getWeatherDefault();
 // for testing if server is working or not
 // routedata.CheckMaster('Karachi')
 route.post('/', async (req, res) => {
@@ -38,18 +39,17 @@ route.post('/addCity', async (req, res) => {
 
 
 
-
-
 //  for adding user
 route.post('/addUser', async (req, res) => {
-    console.log(req.body,"rr")
+    // console.log(routedata.weatherarr,"rr")
+   
 
     const addActivity = new userModule({
         firstName: req.body.data.firstName,
         lastName: req.body.data.lastName,
         email: req.body.data.email,
         password: await bcrypt.hash(req.body.data.password, saltRounds),
-        cities: ['karachi','Lahore','Islamabad','Quetta','Peshawar']
+        cities: routedata.weatherarr.slice(0,5)
 
     });
 
