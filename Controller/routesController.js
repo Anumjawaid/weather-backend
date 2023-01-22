@@ -28,14 +28,41 @@ route.post('/addCity', async (req, res) => {
          res.send({ message: 'This City Has ALready Been In your List' });
     }
     else{
-    routedata.SingleRoute(req,res)
+    routedata.SingleRoute(req,res,result,userModule)
     // res.send({ message: 'hello from server' });
     }
 
 })
 
+//Specific city modal for a user
+route.post('/getWeather', async (req, res)=>{
 
+    // Get a single city
+    let city = req.body.q;
+    let weather;
+    // Use that city name to fetch data
+    // Use the API_KEY 
+    let url = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}&aqi=no`;
+    await request(url,(err, response, body) =>{
 
+        // On return, check the json data fetched
+        if (err) {
+            res.render('index', { weather: null, error: 'Error, please try again' });
+        } else {
+            console.log("here")
+             weather = JSON.parse(body);
+        }
+    })
+    setTimeout(function() {
+        try {
+            console.log(weather)
+            res.send({data:weather});
+        } catch(e) {
+             reject(e);
+        }
+    }, 1000);
+   
+});
 
 
 
