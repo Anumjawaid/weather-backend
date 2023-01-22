@@ -44,6 +44,8 @@ route.post('/getWeather', function(req, res) {
 
 //  for adding user
 route.post('/addUser', async (req, res) => {
+    console.log(req.body,"rr")
+
     console.log(req.body,"req")
     let cities=await GetDefaultCities()
 
@@ -57,7 +59,7 @@ route.post('/addUser', async (req, res) => {
     });
 
     const result = await addActivity.save();
-    res.send({ message: 'data added' });
+    res.send({ message: "User Created" ,result:result});
 });
 
 
@@ -67,9 +69,15 @@ route.post('/addUser', async (req, res) => {
 route.post('/queryUser', async (req, res) => {
     console.log(req.body,"req")
 
-   const result = await userModule.find({email: req.body.email})
-   console.log(result)
-    res.send({ message: 'data added' });
+    const result = await userModule.find({ email: req.body.data.email })
+    if (result.length != 0) {
+        let valid = await validateUser(req.body.data.password, result[0].password)
+        res.send({ message: valid ,result:result});
+    }
+    else {
+        res.send({ message: "User doesnot exist" });
+    }
+
 });
 
 async function GetDefaultCities(){
