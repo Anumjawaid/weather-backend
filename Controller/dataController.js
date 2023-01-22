@@ -7,6 +7,7 @@ const dataModule = new mongoose.model('MasterData', dataSchema);
 // const userroute = require('./routesController.js');
 const apiKey = "a355251073b74f4899d63723232001"
 let weatherarr = [];
+let globalUserArr=[]
 function test() {
     let yourSchema = new dataModule;
     yourSchema.detail = {}

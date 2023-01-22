@@ -8,7 +8,8 @@ const bcrypt = require("bcrypt")
 const saltRounds = 10
 const apiKey = "a355251073b74f4899d63723232001"
 let city5=[]
-let globalUserArr=[]
+
+
 
 const returnRouter = function (socket) {
 function validateUser(hash) {
@@ -105,7 +106,7 @@ route.post('/addUser', async (req, res) => {
     });
 
     const result = await addActivity.save();
-    globalUserArr.push({id:result._id,city:result.cities})
+    routedata.globalUserArr.push({id:result._id,city:result.cities})
     console.log(globalUserArr,"dasdasd")
     res.send({ message: "User Created" ,result:result});
 });
@@ -128,13 +129,7 @@ route.post('/queryUser', async (req, res) => {
 
 });
 
-async function GetDefaultCities(){
-    return [
-        {name:"karachi",condition:{"gfgdf":"ffdfg"}},
-        {name:"Islamad",condition:{"gfgdf":"ffdfg"}},
-        {name:"peshawar",condition:{"gfgdf":"ffdfg"}}
-]
-}
+
 
 
 
