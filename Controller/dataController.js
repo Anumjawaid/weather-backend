@@ -72,50 +72,50 @@ const getWeatherDefault = () => {
 
 
 async function SingleRoute(req, res) {
+    
+        let url = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${req.body.data.city}&aqi=no`;
+        await request(url, async function (err, response, body) {
+            // On return, check the json data fetched
+            if (err) {
+                res.render('index', { weather: null, error: 'Error, please try again' });
+            } else {
 
-    let url = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${req.body.data.city}&aqi=no`;
-    await request(url, async function (err, response, body) {
-        // On return, check the json data fetched
-        if (err) {
-            res.render('index', { weather: null, error: 'Error, please try again' });
-        } else {
+                let weather = JSON.parse(body);
+                // const getUserName=await(dataModule.find({Name:rname}) )
+                if (weather.error == undefined) {
+                    // Check if this city is in master if yes then update with Id Else add to master List aswell
+                    const getDesc = await (dataModule.find({ Name: req.body.data.city }))
+                    console.log(getDesc, "getDesc")
+                    let _id = getDesc[0]._id
+                    if (getDesc.length != 0) {
+                        // If City Exist then Map to User
+                        // const updateactivity = await dataModule.findByIdAndUpdate({ _id },
+                        //     {
+                        //         $set: {
+                        //             Name: weather.location.name,
+                        //             detail: { temp: weather.current.temp_c, condition: weather.current.condition }
+                        //         }
+                        //     });
 
-            let weather = JSON.parse(body);
-            // const getUserName=await(dataModule.find({Name:rname}) )
-            if (weather.error == undefined) {
-                // Check if this city is in master if yes then update with Id Else add to master List aswell
-                const getDesc = await (dataModule.find({ Name: req.body.data.city }))
-                console.log(getDesc, "getDesc")
-                let _id = getDesc[0]._id
-                if (getDesc.length != 0) {
-                    // If City Exist then Map to User
-                    // const updateactivity = await dataModule.findByIdAndUpdate({ _id },
-                    //     {
-                    //         $set: {
-                    //             Name: weather.location.name,
-                    //             detail: { temp: weather.current.temp_c, condition: weather.current.condition }
-                    //         }
-                    //     });
+                    }
+                    else {
+                        // Add to Master and Update to User
+                    }
+
+                    res.send({ message: "Able" })
 
                 }
                 else {
-                    // Add to Master and Update to User
+                    // return {message:"No such City Exist"}
+                    res.send({ message: "Error" })
                 }
 
-                res.send({ message: "Able" })
+
+
 
             }
-            else {
-                // return {message:"No such City Exist"}
-                res.send({ message: "Error" })
-            }
-
-
-
-
-        }
-    })
-
+        })
+    
 
 }
 

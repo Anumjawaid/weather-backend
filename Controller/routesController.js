@@ -6,11 +6,8 @@ const routedata = require('./dataController.js');
 const request = require("request");
 const bcrypt = require("bcrypt")
 const saltRounds = 10
-<<<<<<< HEAD
-=======
 const apiKey = "a355251073b74f4899d63723232001"
 let city5=[]
->>>>>>> 29746c113d85bf6a3d97e7bdb8fa43145f58dfb7
 
 routedata.getWeatherDefault();
 // for testing if server is working or not
@@ -19,7 +16,6 @@ route.get('/', async (req, res) => {
     res.send({ message: 'hello from server' });
 
 })
-const apiKey = "a355251073b74f4899d63723232001"
 // route.get('/ff',routedata.test)
 
 
@@ -47,29 +43,16 @@ route.post('/getWeather', function(req, res) {
 
 //  for adding user
 route.post('/addUser', async (req, res) => {
-<<<<<<< HEAD
-    console.log(req.body,"rr")
-
-    console.log(req.body,"req")
-    let cities=await GetDefaultCities()
-=======
     // console.log(routedata.weatherarr,"rr")
    
->>>>>>> 29746c113d85bf6a3d97e7bdb8fa43145f58dfb7
 
     const addActivity = new userModule({
         firstName: req.body.data.firstName,
         lastName: req.body.data.lastName,
         email: req.body.data.email,
-<<<<<<< HEAD
-        password:await bcrypt.hash(req.body.data.password, saltRounds),
-        cities:cities
-       
-=======
         password: await bcrypt.hash(req.body.data.password, saltRounds),
         cities: routedata.weatherarr.slice(0,5)
 
->>>>>>> 29746c113d85bf6a3d97e7bdb8fa43145f58dfb7
     });
 
     const result = await addActivity.save();
