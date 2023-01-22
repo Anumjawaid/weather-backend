@@ -19,26 +19,35 @@ route.get('/', async (req, res) => {
 // route.get('/ff',routedata.test)
 
 
-route.post('/getWeather', function(req, res) {
+route.post('/getWeather', async (req, res)=>{
 
-        // Get a single city
-        let city = req.body.city;
-        // Use that city name to fetch data
-        // Use the API_KEY 
-        let url = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}&aqi=no`;
-        request(url, function(err, response, body) {
-    
-            // On return, check the json data fetched
-            if (err) {
-                res.render('index', { weather: null, error: 'Error, please try again' });
-            } else {
-                let weather = JSON.parse(body);
-                console.log(weather);
-            }
-        })
+    // Get a single city
+    let city = req.body.q;
+    console.log(city)
+    let weather;
+    // Use that city name to fetch data
+    // Use the API_KEY 
+    let url = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}&aqi=no`;
+    await request(url,(err, response, body) =>{
+
+        // On return, check the json data fetched
+        if (err) {
+            res.render('index', { weather: null, error: 'Error, please try again' });
+        } else {
+             weather = JSON.parse(body);
+        }
+    })
+    setTimeout(function() {
+        try {
+            res.send({weather:weather});
+        } catch(e) {
+             reject(e);
+        }
+    }, 1000);
+   
+});
      
-    
-    });
+
 
 
 //  for adding user
