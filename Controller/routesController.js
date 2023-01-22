@@ -8,11 +8,31 @@ const bcrypt = require("bcrypt")
 const saltRounds = 10
 const apiKey = "a355251073b74f4899d63723232001"
 let city5=[]
+let globalUserArr=[]
 
+const returnRouter = function (socket) {
+function validateUser(hash) {
 
-
+    bcrypt
+      .compare(password, hash)
+      .then(res => {
+        console.log(res) // return true
+      })
+      .catch(err => console.error(err.message))        
+}
 
 routedata.getWeatherDefault();
+let interval;
+
+if (interval) {
+    clearInterval(interval);
+}
+
+interval = setInterval(() => routedata.getWeatherDefault(), 5000);
+interval2 = setInterval(() => {
+    console.log(globalUserArr,"global")
+    // console.log(routedata.weatherarr,"weatherARRAY")
+}, 7000);
 // for testing if server is working or not
 route.get('/', async (req, res) => {
 
@@ -85,6 +105,8 @@ route.post('/addUser', async (req, res) => {
     });
 
     const result = await addActivity.save();
+    globalUserArr.push({id:result._id,city:result.cities})
+    console.log(globalUserArr,"dasdasd")
     res.send({ message: "User Created" ,result:result});
 });
 
@@ -115,13 +137,10 @@ async function GetDefaultCities(){
 }
 
 
-function validateUser(hash) {
 
-    bcrypt
-      .compare(password, hash)
-      .then(res => {
-        console.log(res) // return true
-      })
-      .catch(err => console.error(err.message))        
+
+return route;
 }
-module.exports = route;
+module.exports = {
+    route: returnRouter
+};
