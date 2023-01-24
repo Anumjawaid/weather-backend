@@ -8,6 +8,7 @@ const bcrypt = require("bcrypt")
 const saltRounds = 10
 const apiKey = "a355251073b74f4899d63723232001"
 let city5=[]
+let Globalarr=[]
 
 
 
@@ -22,16 +23,16 @@ function validateUser(hash) {
       .catch(err => console.error(err.message))        
 }
 
-routedata.getWeatherDefault();
+//routedata.getWeatherDefault(Globalarr);
 let interval;
 
 if (interval) {
     clearInterval(interval);
 }
 
-interval = setInterval(() => routedata.getWeatherDefault(), 5000);
+//interval = setInterval(() => routedata.getWeatherDefault(Globalarr), 50000);
 interval2 = setInterval(() => {
-    console.log(globalUserArr,"global")
+    //console.log(routedata.globalUserArr,"global")
     // console.log(routedata.weatherarr,"weatherARRAY")
 }, 7000);
 // for testing if server is working or not
@@ -106,8 +107,9 @@ route.post('/addUser', async (req, res) => {
     });
 
     const result = await addActivity.save();
-    routedata.globalUserArr.push({id:result._id,city:result.cities})
-    console.log(globalUserArr,"dasdasd")
+    Globalarr.push({id:result._id,city:result.cities})
+    console.log(Globalarr)
+    routedata.globalUserArr =[...Globalarr]
     res.send({ message: "User Created" ,result:result});
 });
 

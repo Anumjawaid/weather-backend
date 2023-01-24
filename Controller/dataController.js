@@ -7,7 +7,7 @@ const dataModule = new mongoose.model('MasterData', dataSchema);
 // const userroute = require('./routesController.js');
 const apiKey = "a355251073b74f4899d63723232001"
 let weatherarr = [];
-let globalUserArr=[]
+//let globalUserArr=[]
 function test() {
     let yourSchema = new dataModule;
     yourSchema.detail = {}
@@ -17,7 +17,7 @@ function test() {
 }
 
 
-const getWeatherDefault = () => {
+const getWeatherDefault = (globalUserArr) => {
     let locationArray = ["Karachi", "Lahore", "Islamabad", "Quetta", "Peshawar", "Hyderabad", 'Ziarat', "Khuzdar"]
 
     for (let i = 0; i < locationArray.length; i++) {
@@ -49,8 +49,20 @@ const getWeatherDefault = () => {
                                 detail: { temp: weather.current.temp_c, condition: weather.current.condition }
                             }
                         });
-
-
+                        //console.log(globalUserArr)
+                        if(globalUserArr.length !=0)
+                        {
+                            globalUserArr.map(async function({id}){
+                                let _id=id;
+                                console.log(_id)
+                                const updateUserDetail = await dataModule.findByIdAndUpdate({ _id },
+                                    {
+                                        $set: {
+                                            detail: { temp: weather.current.temp_c, condition: weather.current.condition }
+                                        }
+                                    });
+                            })
+                        }
                     // updatae record in db
                 }
                 else {
@@ -66,7 +78,7 @@ const getWeatherDefault = () => {
                     });
                     const result = addActivity.save();
                 }
-
+             
 
             }
         })
