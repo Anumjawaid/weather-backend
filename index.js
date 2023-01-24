@@ -1,9 +1,19 @@
 const express = require('express');
 const app = express();
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require('socket.io');
+const io = new Server(server, {
+    cors: {
+      origin: "http://localhost:3000",
+      methods: ["GET", "POST"],
+    },
+  });
+
 const dotenv = require('dotenv');
+const routes = require('./Controller/routesController');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const routes = require('./Controller/routesController');
 
 dotenv.config();
 app.use(cors());
@@ -18,11 +28,16 @@ mongoose.connect(`mongodb+srv://Anum:anum@cluster0.x9rxwjh.mongodb.net/wheather`
     useUnifiedTopology: true
 }).then(() => {
     console.log('connection successful..');
-}).catch((err) => console.log(err)); 
-app.use('/', routes);
+}).catch((err) => console.log(err));
 
-app.listen(process.env.PORT || 3001, () => {
-    console.log(`server listening on ${process.env.PORT}`)
-    
-    
-})
+
+io.on('connection', (socket) => {
+    console.log('a user connected');
+
+    app.use('/', routes.route(socket));
+
+});
+
+server.listen(process.env.PORT, () => {
+    console.log(`server listening on ${process.env.PORT}`);
+});
