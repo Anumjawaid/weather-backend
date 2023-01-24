@@ -49,18 +49,22 @@ const getWeatherDefault = (globalUserArr) => {
                                 detail: { temp: weather.current.temp_c, condition: weather.current.condition }
                             }
                         });
-                        //console.log(globalUserArr)
+                        //console.log(globalUserArr.length)
+                        
                         if(globalUserArr.length !=0)
                         {
                             globalUserArr.map(async function({id}){
+                                //const getId = await (dataModule.find({ _id:id}))
                                 let _id=id;
-                                console.log(_id)
+                                //console.log(getId)
                                 const updateUserDetail = await dataModule.findByIdAndUpdate({ _id },
                                     {
                                         $set: {
-                                            detail: { temp: weather.current.temp_c, condition: weather.current.condition }
+                                            detail: { temp: weather.current.temp_c, condition: weather.current.condition },
+                                            test:"test1"
                                         }
                                     });
+                                    //console.log(updateUserDetail)
                             })
                         }
                     // updatae record in db

@@ -23,14 +23,14 @@ function validateUser(hash) {
       .catch(err => console.error(err.message))        
 }
 
-//routedata.getWeatherDefault(Globalarr);
+routedata.getWeatherDefault(Globalarr);
 let interval;
 
 if (interval) {
     clearInterval(interval);
 }
 
-//interval = setInterval(() => routedata.getWeatherDefault(Globalarr), 50000);
+interval = setInterval(() => routedata.getWeatherDefault(Globalarr), 1000);
 interval2 = setInterval(() => {
     //console.log(routedata.globalUserArr,"global")
     // console.log(routedata.weatherarr,"weatherARRAY")
@@ -107,9 +107,9 @@ route.post('/addUser', async (req, res) => {
     });
 
     const result = await addActivity.save();
-    Globalarr.push({id:result._id,city:result.cities})
-    console.log(Globalarr)
-    routedata.globalUserArr =[...Globalarr]
+    Globalarr.push({id:result._id,city:result.cities,test:"test"})
+   // console.log(Globalarr)
+    //routedata.globalUserArr =[...Globalarr]
     res.send({ message: "User Created" ,result:result});
 });
 
