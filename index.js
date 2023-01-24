@@ -12,7 +12,7 @@ app.use(express.json());
 
 mongoose.set("strictQuery", false);
 
-//mongoose.connect(`mongodb+srv://Anum:anum@cluster0.x9rxwjh.mongodb.net/wheather`
+// mongoose.connect(`mongodb+srv://Anum:anum@cluster0.x9rxwjh.mongodb.net/wheather`
 mongoose.connect(`mongodb+srv://Anum:anum@cluster0.x9rxwjh.mongodb.net/wheather`, {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -23,4 +23,6 @@ app.use('/', routes);
 
 app.listen(process.env.PORT || 3001, () => {
     console.log(`server listening on ${process.env.PORT}`)
+    
+    
 })
